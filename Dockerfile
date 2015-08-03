@@ -1,4 +1,4 @@
-FROM phusion/passenger-ruby22
+FROM phusion/passenger-full
 ENV HOME /home/app
 ENV SECRET_KEY_BASE `rake secret`
 CMD ["/sbin/my_init"]
@@ -14,8 +14,7 @@ RUN chown -R app:app /home/app/webapp
 
 ADD Gemfile Gemfile
 ADD Gemfile.lock Gemfile.lock
-RUN gem install bundler
-RUN sudo -u app bundle install --deployment
+RUN sudo -u app bundle install --verbose --deployment --jobs 5
 
 ADD . /home/app/webapp
 RUN chown -R app:app /home/app/webapp
